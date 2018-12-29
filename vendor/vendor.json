@@ -89,6 +89,16 @@
 			"revisionTime": "2018-12-26T10:54:42Z"
 		},
 		{
+			"checksumSHA1": "odKru9qdXJ+6HUaebZMZI6qCufc=",
+			"path": "github.com/rs/xid",
+			"revision": "15d26544def341f036c5f8dca987a4cbe575032c",
+			"revisionTime": "2018-08-30T17:51:11Z"
+		},
+		{
+			"path": "github.com/stretchr/rs/xid",
+			"revision": ""
+		},
+		{
 			"checksumSHA1": "6QB6TZUxUsC82XEtugVx6NHu4lc=",
 			"path": "github.com/stretchr/testify/assert",
 			"revision": "c45a1382af909f3ed0abc3b8d8e59e6db48ed9d8",

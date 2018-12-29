@@ -6,19 +6,21 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// List all games
 func List(router *gin.RouterGroup) {
 	router.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, getAll())
+		c.JSON(http.StatusOK, list())
 	})
 }
 
+// Create game
 func Create(router *gin.RouterGroup) {
 	router.POST("/", func(c *gin.Context) {
-		var newGame game
-		c.BindJSON(&newGame)
+		var g game
+		c.BindJSON(&g)
 
-		create(newGame)
+		g = create(g)
 
-		c.JSON(http.StatusOK, newGame)
+		c.JSON(http.StatusOK, g)
 	})
 }

@@ -1,6 +1,7 @@
 package games
 
 import (
+	"bytes"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -10,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestList(t *testing.T) {
+func TestListRoute(t *testing.T) {
 	assert := assert.New(t)
 
 	engine := gin.New()
@@ -18,16 +19,40 @@ func TestList(t *testing.T) {
 
 	List(api.Group("/games"))
 
-	req, err := http.NewRequest("GET", "/api/games", nil)
+	req, err := http.NewRequest("GET", "/api/games/", nil)
+	res := httptest.NewRecorder()
+	engine.ServeHTTP(res, req)
+
+	list := []game{}
+	json.Unmarshal([]byte(res.Body.String()), &list)
+
 	assert.NoError(err)
+	assert.NotEmpty(list[len(list)-1].ID)
+	assert.NotEmpty(list[len(list)-1].Name)
+}
 
-	recorder := httptest.NewRecorder()
-	engine.ServeHTTP(recorder, req)
+func TestCreateRoute(t *testing.T) {
+	assert := assert.New(t)
 
-	result := []game{}
-	json.NewDecoder(recorder.Body).Decode(&result)
+	engine := gin.New()
+	api := engine.Group("/api")
 
-	for _, game := range result {
-		assert.NotNil(game.ID)
-	}
+	Create(api.Group("/games"))
+
+	g, _ := json.Marshal(game{
+		ID:   "foo",
+		Name: "bar",
+	})
+
+	req, err := http.NewRequest("POST", "/api/games/", bytes.NewBuffer(g))
+	res := httptest.NewRecorder()
+	engine.ServeHTTP(res, req)
+
+	created := game{}
+	json.Unmarshal([]byte(res.Body.String()), &created)
+
+	assert.NoError(err)
+	assert.NotEmpty(created.ID)
+	assert.NotEqual(created.ID, "foo")
+	assert.Equal(created.Name, "bar")
 }

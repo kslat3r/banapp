@@ -1,25 +1,22 @@
 package games
 
+import "github.com/rs/xid"
+
 type game struct {
-	ID   int    `json:"id"`
+	ID   string `json:"id"`
 	Name string `json:"name"`
 }
 
-var all = []game{
-	game{
-		ID:   1,
-		Name: "One",
-	},
-	game{
-		ID:   2,
-		Name: "Two",
-	},
-}
+var all = []game{}
 
-func getAll() []game {
+func list() []game {
 	return all
 }
 
-func create(g game) {
+func create(g game) game {
+	g.ID = xid.New().String()
+
 	all = append(all, g)
+
+	return g
 }
