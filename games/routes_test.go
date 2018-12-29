@@ -28,6 +28,6 @@ func TestList(t *testing.T) {
 	json.NewDecoder(recorder.Body).Decode(&result)
 
 	for _, game := range result {
-		assert.NotNil(game.id)
+		assert.NotNil(game.ID)
 	}
 }

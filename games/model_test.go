@@ -10,7 +10,7 @@ func TestGetAll(t *testing.T) {
 	}
 
 	for key, game := range games {
-		if game.id != all[key].id {
+		if game.ID != all[key].ID {
 			t.Fail()
 
 			break

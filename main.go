@@ -11,6 +11,7 @@ func main() {
 	api := engine.Group("/api")
 
 	games.List(api.Group("/games"))
+	games.Create(api.Group("/games"))
 
 	engine.Run()
 }

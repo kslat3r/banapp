@@ -1,14 +1,25 @@
 package games
 
 type game struct {
-	id int `json:"id"`
+	ID   int    `json:"id"`
+	Name string `json:"name"`
 }
 
 var all = []game{
-	game{id: 1},
-	game{id: 2},
+	game{
+		ID:   1,
+		Name: "One",
+	},
+	game{
+		ID:   2,
+		Name: "Two",
+	},
 }
 
 func getAll() []game {
 	return all
+}
+
+func create(g game) {
+	all = append(all, g)
 }
