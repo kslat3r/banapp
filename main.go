@@ -1,10 +1,16 @@
 package main
 
 import (
-	"bananagrams-api/math"
-	"fmt"
+	"github.com/gin-gonic/gin"
+
+	"bananagrams-api/games"
 )
 
 func main() {
-	fmt.Println("Hello world! My lucky number is", math.Mul2(privateHelperFunc()))
+	engine := gin.Default()
+	api := engine.Group("/api")
+
+	games.List(api.Group("/games"))
+
+	engine.Run()
 }
