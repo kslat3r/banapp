@@ -19,6 +19,9 @@ spec:
       - name: "ban-api"
         image: "eu.gcr.io/ban-online/ban-api:1.0.0"
         imagePullPolicy: Always
+        env:
+        - name: MONGODB_URL
+          value: "mongodb://user:f79698857c@35.242.158.255:27017/bananagrams"
 ---
 apiVersion: "autoscaling/v1"
 kind: "HorizontalPodAutoscaler"
