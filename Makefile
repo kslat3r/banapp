@@ -25,10 +25,6 @@ release:
 	docker tag ${IMAGE_NAME}:$(VERSION) ${GCR_HOSTNAME}/${GC_PROJECT_ID}/${IMAGE_NAME}:${VERSION}
 	docker push ${GCR_HOSTNAME}/${GC_PROJECT_ID}/${IMAGE_NAME}:${VERSION}
 
-tag:
-	git tag -a $(VERSION) -m "Release" || true
-	git push origin $(VERSION)
-
 deploy:
 	kubectl config use-context ${GCR_CONTEXT}
 	kubectl apply -f env/api-deployment.yml
