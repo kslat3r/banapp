@@ -1,22 +1,36 @@
 package games
 
-import "github.com/rs/xid"
+import (
+	"ban-api/src/common"
+
+	"github.com/globalsign/mgo/bson"
+)
 
 type game struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID   bson.ObjectId `json:"_id,omitempty" bson:"_id,omitempty"`
+	Name string        `json:"name" binding:"required" bson:"name"`
 }
 
-var all = []game{}
-
 func list() []game {
-	return all
+	var list = []game{}
+
+	err := common.Db.C("games").Find(nil).All(&list)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return list
 }
 
 func create(g game) game {
-	g.ID = xid.New().String()
+	g.ID = bson.NewObjectId()
 
-	all = append(all, g)
+	err := common.Db.C("games").Insert(g)
+
+	if err != nil {
+		panic(err)
+	}
 
 	return g
 }
