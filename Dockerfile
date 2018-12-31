@@ -4,7 +4,6 @@ WORKDIR /usr/local/go/src/ban-api
 ADD . .
 
 RUN make install
-RUN make test
 RUN make build
 
 CMD ban-api

@@ -18,6 +18,9 @@ fmt:
 build:
 	go build -v
 
+change:
+	make test && make image && make release && make deploy
+
 image:
 	docker build -t ${IMAGE_NAME}:$(VERSION) .
 

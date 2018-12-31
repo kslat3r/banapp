@@ -6,7 +6,7 @@ import (
 	"github.com/globalsign/mgo"
 )
 
-const mongoDbURL = "mongodb://localhost"
+const mongoDbURL = "mongodb://localhost/bananagrams"
 
 // Session the global session
 var Session *mgo.Session
@@ -22,7 +22,13 @@ func InitDb() {
 		url = mongoDbURL
 	}
 
-	Session, err := mgo.Dial(url)
+	info, err := mgo.ParseURL(url)
+
+	if err != nil {
+		panic(err)
+	}
+
+	Session, err := mgo.DialWithInfo(info)
 
 	if err != nil {
 		panic(err)
