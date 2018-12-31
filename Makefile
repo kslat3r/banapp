@@ -9,10 +9,10 @@ install:
 	go install -v
 
 test:
-	go test ./src/... -v
+	go test ./... -v
 
 fmt:
-	go fmt ./src/... -v
+	go fmt ./... -v
 
 build:
 	go build -v
