@@ -1,6 +1,6 @@
 VERSION         :=      $(shell cat ./VERSION)
-IMAGE_NAME      :=      bananagrams-api
-GC_PROJECT_ID	:=		bananagrams
+IMAGE_NAME      :=      ban-api
+GC_PROJECT_ID	:=		ban-online
 GCR_HOSTNAME	:= 		eu.gcr.io
 
 all: install
@@ -9,10 +9,10 @@ install:
 	go install -v
 
 test:
-	go test ./... -v
+	go test ./src/... -v
 
 fmt:
-	go fmt ./... -v
+	go fmt ./src/... -v
 
 build:
 	go build -v

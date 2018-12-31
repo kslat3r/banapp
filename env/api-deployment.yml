@@ -1,0 +1,37 @@
+apiVersion: "extensions/v1beta1"
+kind: "Deployment"
+metadata:
+  name: "ban-api"
+  namespace: "default"
+  labels:
+    app: "ban-api"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "ban-api"
+  template:
+    metadata:
+      labels:
+        app: "ban-api"
+    spec:
+      containers:
+      - name: "ban-api"
+        image: "eu.gcr.io/ban-online/ban-api:1.0.0"
+        imagePullPolicy: Always
+---
+apiVersion: "autoscaling/v1"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "ban-api-hpa"
+  namespace: "default"
+  labels:
+    app: "ban-api"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "ban-api"
+    apiVersion: "apps/v1beta1"
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
