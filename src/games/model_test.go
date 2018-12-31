@@ -1,33 +1,38 @@
 package games
 
 import (
+	"ban-api/src/common"
+	"fmt"
 	"testing"
 
+	"github.com/globalsign/mgo/bson"
 	"github.com/stretchr/testify/assert"
 )
+
+func init() {
+	common.InitDb()
+}
 
 func TestList(t *testing.T) {
 	assert := assert.New(t)
 	games := list()
 
-	assert.Equal(len(games), len(all))
-
-	for key, game := range games {
-		assert.Equal(game.ID, all[key].ID)
+	for _, game := range games {
+		assert.IsType(game.ID, bson.NewObjectId())
+		assert.NotEmpty(game.Name)
 	}
 }
 
 func TestCreate(t *testing.T) {
 	assert := assert.New(t)
 	newGame := game{
-		Name: "name",
+		Name: "foo",
 	}
 
-	create(newGame)
+	newGame = create(newGame)
 
-	allGames := list()
-	gameToTest := allGames[len(allGames)-1]
+	fmt.Println(newGame.ID)
 
-	assert.IsType(gameToTest.ID, "id")
-	assert.Equal(gameToTest.Name, newGame.Name)
+	assert.IsType(newGame.ID, bson.NewObjectId())
+	assert.Equal(newGame.Name, "foo")
 }

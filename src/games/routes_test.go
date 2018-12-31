@@ -1,6 +1,7 @@
 package games
 
 import (
+	"ban-api/src/common"
 	"bytes"
 	"encoding/json"
 	"net/http"
@@ -8,8 +9,13 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
+	"github.com/globalsign/mgo/bson"
 	"github.com/stretchr/testify/assert"
 )
+
+func init() {
+	common.InitDb()
+}
 
 func TestListRoute(t *testing.T) {
 	assert := assert.New(t)
@@ -27,7 +33,7 @@ func TestListRoute(t *testing.T) {
 	json.Unmarshal([]byte(res.Body.String()), &list)
 
 	assert.NoError(err)
-	assert.NotEmpty(list[len(list)-1].ID)
+	assert.IsType(list[len(list)-1].ID, bson.NewObjectId())
 	assert.NotEmpty(list[len(list)-1].Name)
 }
 
@@ -40,7 +46,6 @@ func TestCreateRoute(t *testing.T) {
 	Create(api.Group("/games"))
 
 	g, _ := json.Marshal(game{
-		ID:   "foo",
 		Name: "bar",
 	})
 
@@ -52,7 +57,6 @@ func TestCreateRoute(t *testing.T) {
 	json.Unmarshal([]byte(res.Body.String()), &created)
 
 	assert.NoError(err)
-	assert.NotEmpty(created.ID)
-	assert.NotEqual(created.ID, "foo")
+	assert.IsType(created.ID, bson.NewObjectId())
 	assert.Equal(created.Name, "bar")
 }
