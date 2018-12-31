@@ -1,8 +1,8 @@
 VERSION         :=      $(shell cat ./VERSION)
-IMAGE_NAME      :=      ban-api
-GC_PROJECT_ID	:=		ban-online
+IMAGE_NAME      :=      ban-app
+GC_PROJECT_ID	:=		ban-app
 GCR_HOSTNAME	:= 		eu.gcr.io
-GCR_CONTEXT		:=		gke_ban-online_europe-west2-a_ban-api
+GCR_CONTEXT		:=		gke_ban-app_europe-west2-a_ban-app-prod
 
 all: install
 

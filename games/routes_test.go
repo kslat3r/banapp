@@ -1,7 +1,7 @@
 package games
 
 import (
-	"ban-api/common"
+	"ban-app/common"
 	"bytes"
 	"encoding/json"
 	"net/http"

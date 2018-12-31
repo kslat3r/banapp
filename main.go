@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 
-	"ban-api/common"
-	"ban-api/games"
+	"ban-app/common"
+	"ban-app/games"
 )
 
 func init() {
