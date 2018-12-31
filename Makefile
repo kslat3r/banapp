@@ -2,6 +2,7 @@ VERSION         :=      $(shell cat ./VERSION)
 IMAGE_NAME      :=      ban-api
 GC_PROJECT_ID	:=		ban-online
 GCR_HOSTNAME	:= 		eu.gcr.io
+GCR_CONTEXT		:=		gke_ban-online_europe-west2-a_ban-api
 
 all: install
 
@@ -27,3 +28,7 @@ release:
 tag:
 	git tag -a $(VERSION) -m "Release" || true
 	git push origin $(VERSION)
+
+deploy:
+	kubectl config use-context ${GCR_CONTEXT}
+	kubectl apply -f env/api-deployment.yml
