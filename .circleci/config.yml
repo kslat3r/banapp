@@ -60,28 +60,28 @@ workflows:
   release-staging:
     jobs:
       - test
-          context: ban-app-staging
           filters:
             branches:
               only: develop
-      - deploy:
           context: ban-app-staging
+      - deploy:
           requires:
             - test
           filters:
             branches:
               only: develop
+          context: ban-app-staging
   release-prod:
     jobs:
       - test
-          context: ban-app-prod
           filters:
             branches:
               only: master
-      - deploy:
           context: ban-app-prod
+      - deploy:
           requires:
             - test
           filters:
             branches:
               only: master
+          context: ban-app-prod
