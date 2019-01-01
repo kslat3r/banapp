@@ -23,8 +23,7 @@ jobs:
       - run: make test
 
   build:
-    docker:
-      - image: circleci/golang:1.11
+    machine: true
     working_directory: /go/src/ban-app
     steps:
       - checkout
