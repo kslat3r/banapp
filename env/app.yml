@@ -36,6 +36,6 @@ spec:
         - name: MONGODB_URL
           valueFrom:
             secretKeyRef:
-              name: ${GOOGLE_PROJECT_ID}-mongodb
+              name: ${GOOGLE_PROJECT_ID}
               key: connection-string
 ---
