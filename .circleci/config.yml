@@ -26,7 +26,7 @@ jobs:
   deploy:
     docker:
       - image: google/cloud-sdk
-    steps:
+    steps: &deploy-steps
       - checkout
       - setup_remote_docker
       - run:
@@ -39,7 +39,6 @@ jobs:
             gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
             gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
             gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin ${GOOGLE_HOSTNAME}
-            gcloud --quiet container clusters get-credentials ${GOOGLE_CLUSTER_NAME}
       - run: 
           name: Create Docker image
           command: docker build -t ${GOOGLE_PROJECT_ID}:${CIRCLE_SHA1} .
@@ -48,9 +47,15 @@ jobs:
           command: |
             docker tag ${GOOGLE_PROJECT_ID}:${CIRCLE_SHA1} ${GOOGLE_HOSTNAME}/${GOOGLE_PROJECT_ID}/${GOOGLE_PROJECT_ID}:${CIRCLE_SHA1}
             docker push ${GOOGLE_HOSTNAME}/${GOOGLE_PROJECT_ID}/${GOOGLE_PROJECT_ID}:${CIRCLE_SHA1}
+  deploy-prod:
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      <<: *deploy-steps
       - run:
           name: Deploy to Kubernetes
           command: |
+            gcloud --quiet container clusters get-credentials ${GOOGLE_CLUSTER_NAME}
             envsubst < env/app.yml > /tmp/app.yml
             kubectl apply -f /tmp/app.yml
             kubectl rollout status -w deployment/${GOOGLE_PROJECT_ID}
