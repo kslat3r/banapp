@@ -26,4 +26,3 @@ release:
 
 deploy:
 	kubectl apply -f env/app.yml
-	kubectl rollout status deployment/${GC_PROJECT_ID}
