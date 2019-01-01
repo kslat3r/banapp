@@ -5,7 +5,7 @@ jobs:
     docker:
       - image: circleci/golang:1.11
         environment:
-            MONGODB_URL: mongodb://localhost:27017/ban-app
+          MONGODB_URL: mongodb://localhost:27017/ban-app
       - image: circleci/mongo
     working_directory: /go/src/ban-app
     steps:
@@ -41,11 +41,11 @@ jobs:
             gcloud --quiet container clusters get-credentials ${GOOGLE_CLUSTER_NAME}
       - run: 
           name: Create Docker image
-          command: docker build -t ${GOOGLE_PROJECT_ID}:$(VERSION) .
+          command: docker build -t ${GOOGLE_PROJECT_ID}:${VERSION} .
       - run:
           name: Push Docker image
           command: |
-            docker tag ${GOOGLE_PROJECT_ID}:$(VERSION) ${GOOGLE_HOSTNAME}/${GOOGLE_PROJECT_ID}/${GOOGLE_PROJECT_ID}:${VERSION}
+            docker tag ${GOOGLE_PROJECT_ID}:${VERSION} ${GOOGLE_HOSTNAME}/${GOOGLE_PROJECT_ID}/${GOOGLE_PROJECT_ID}:${VERSION}
             docker push ${GOOGLE_HOSTNAME}/${GOOGLE_PROJECT_ID}/${GOOGLE_PROJECT_ID}:${VERSION}
       - run:
           name: Deploy to Kubernetes
