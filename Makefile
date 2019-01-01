@@ -30,4 +30,4 @@ release:
 
 deploy:
 	kubectl config use-context ${GCR_CONTEXT}
-	kubectl apply -f env/api-deployment.yml
+	kubectl apply -f env/app.yml

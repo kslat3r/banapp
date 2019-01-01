@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ban-app-api
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: ban-app-api
+  type: LoadBalancer
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ban-app-api
+  namespace: default
+  labels:
+    app: ban-app-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ban-app-api
+  template:
+    metadata:
+      labels:
+        app: ban-app-api
+    spec:
+      containers:
+      - name: ban-app-api
+        image: eu.gcr.io/ban-app/ban-app:1.0.0
+        imagePullPolicy: Always
+        env:
+        - name: MONGODB_URL
+          valueFrom:
+            secretKeyRef:
+              name: ban-app-mongodb
+              key: connection-string
+---
