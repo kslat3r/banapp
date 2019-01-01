@@ -4,7 +4,6 @@ WORKDIR /usr/local/go/src/ban-app
 ADD . .
 
 RUN go install
-RUN go build
 
 CMD ban-app
 EXPOSE 8080
