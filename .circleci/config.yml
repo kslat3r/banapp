@@ -57,17 +57,7 @@ jobs:
 
 workflows:
   version: 2
-  release-prod:
-    jobs:
-      - test
-      - deploy:
-          context: ban-app-prod
-          requires:
-            - test
-          filters:
-            branches:
-              only: master
-  release-staging:
+  release:
     jobs:
       - test
       - deploy:
@@ -77,3 +67,10 @@ workflows:
           filters:
             branches:
               only: develop
+      - deploy:
+          context: ban-app-prod
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
