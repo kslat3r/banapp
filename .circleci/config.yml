@@ -23,7 +23,8 @@ jobs:
       - run: make test
 
   build:
-    machine: true
+    docker:
+      - image: google/cloud-sdk
     steps:
       - run: |
           echo $GCLOUD_SERVICE_KEY | sudo gcloud auth activate-service-account --key-file=-
