@@ -34,7 +34,7 @@ jobs:
       - run: make build
       - run: make image
       - run: make release
-      # - run: make deploy
+      - run: make deploy
 
 workflows:
   version: 2
