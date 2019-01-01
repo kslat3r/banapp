@@ -22,15 +22,16 @@ jobs:
             echo Failed waiting for Mongo && exit 1
       - run: make test
 
-  build:
+  deploy:
     docker:
       - image: google/cloud-sdk
     steps:
+      - checkout
       - run: |
           echo $GCLOUD_SERVICE_KEY | sudo gcloud auth activate-service-account --key-file=-
           sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
           sudo gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
-      - checkout
+      - run: make build
       - run: make image
       - run: make release
       # - run: make deploy
@@ -40,6 +41,6 @@ workflows:
   release:
     jobs:
       - test
-      - build:
+      - deploy:
           requires:
             - test
