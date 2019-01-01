@@ -24,13 +24,13 @@ jobs:
 
   build:
     docker:
-      - image: circleci/golang:1.9
+      - image: circleci/golang:1.11
     working_directory: /go/src/ban-app
     steps:
       - checkout
       - run: make image
-      - run: make release
-      - run: make deploy
+      # - run: make release
+      # - run: make deploy
 
 workflows:
   version: 2
