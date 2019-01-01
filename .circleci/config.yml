@@ -23,7 +23,7 @@ jobs:
       - run:
           name: Test
           command: go test ./... -v
-  deploy:
+  deploy: &deploy
     docker:
       - image: google/cloud-sdk
     steps:
@@ -54,13 +54,15 @@ jobs:
             envsubst < env/app.yml > /tmp/app.yml
             kubectl apply -f /tmp/app.yml
             kubectl rollout status -w deployment/${GOOGLE_PROJECT_ID}
+  deploy-prod:
+    <<: *deploy
 
 workflows:
   version: 2
   release:
     jobs:
       - test
-      - deploy:
+      - deploy-prod:
           requires:
             - test
           filters:
