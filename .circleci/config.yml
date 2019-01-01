@@ -27,16 +27,10 @@ jobs:
     docker:
       - image: google/cloud-sdk
         environment:
-          MONGODB_URL: mongodb://localhost:27017/ban-app
+          VERSION: 1.0.0
     steps:
       - checkout
       - setup_remote_docker
-      - run:
-          name: Setup env vars
-
-          command: |
-            export VERSION=$(cat ./VERSION)
-            echo "export VERSION=$VERSION" >> $BASH_ENV
       - run:
           name: Setup Google Cloud SDK
           command: | 
