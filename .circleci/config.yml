@@ -40,7 +40,3 @@ workflows:
       - build:
           requires:
             - test
-          filters:
-            brances:
-              only: master
-          
