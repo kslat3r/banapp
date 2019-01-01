@@ -1,0 +1,133 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ban-app-mongodb
+  labels:
+    app: mongodb
+    chart: mongodb-5.0.0
+    release: "ban-app"
+    heritage: "Tiller"
+type: Opaque
+data:
+  mongodb-root-password:  "changeme"
+  mongodb-password:  "changeme"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  labels:
+    app: mongodb
+    chart: mongodb-5.0.0
+    heritage: Tiller
+    release: ban-app
+  name: ban-app-mongodb
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "8Gi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ban-app-mongodb
+  labels:
+    app: mongodb
+    chart: mongodb-5.0.0
+    release: "ban-app"
+    heritage: "Tiller"
+spec:
+  type: ClusterIP
+  ports:
+  - name: mongodb
+    port: 27017
+    targetPort: mongodb
+  selector:
+    app: mongodb
+    release: "ban-app"
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ban-app-mongodb
+  labels:
+    app: mongodb
+    chart: mongodb-5.0.0
+    release: "ban-app"
+    heritage: "Tiller"
+spec:
+  selector:
+    matchLabels:
+      app: mongodb
+      release: "ban-app"
+  template:
+    metadata:
+      labels:
+        app: mongodb
+        release: "ban-app"
+        chart: mongodb-5.0.0
+    spec:
+      securityContext:
+        fsGroup: 1001
+        runAsUser: 1001
+      containers:
+      - name: ban-app-mongodb
+        image: docker.io/bitnami/mongodb:4.0.3
+        imagePullPolicy: "Always"
+        env:
+        - name: MONGODB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: ban-app-mongodb
+              key: mongodb-root-password
+        - name: MONGODB_USERNAME
+          value: "user"
+        - name: MONGODB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: ban-app-mongodb
+              key: mongodb-password
+        - name: MONGODB_DATABASE
+          value: "ban-app"
+        - name: MONGODB_ENABLE_IPV6
+          value: "yes"
+        - name: MONGODB_EXTRA_FLAGS
+          value:
+        ports:
+        - name: mongodb
+          containerPort: 27017
+        livenessProbe:
+          exec:
+            command:
+            - mongo
+            - --eval
+            - "db.adminCommand('ping')"
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 6
+        readinessProbe:
+          exec:
+            command:
+            - mongo
+            - --eval
+            - "db.adminCommand('ping')"
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 6
+        volumeMounts:
+        - name: data
+          mountPath: /bitnami/mongodb
+        resources:
+          {}
+
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: ban-app-mongodb
+---
