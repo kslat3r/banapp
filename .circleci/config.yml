@@ -63,6 +63,8 @@ workflows:
     jobs:
       - test
       - deploy-prod:
+          environment:
+            GOOGLE_CLUSTER_NAME: blah
           requires:
             - test
           filters:
