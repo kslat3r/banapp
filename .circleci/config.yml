@@ -51,8 +51,8 @@ jobs:
       - run:
           name: Deploy to Kubernetes
           command: |
-            envsubst < env/app.yml > env/app.yml
-            kubectl apply -f env/app.yml
+            envsubst < env/app.yml > /tmp/app.yml
+            kubectl apply -f /tmp/app.yml
             kubectl rollout status -w deployment/${GOOGLE_PROJECT_ID}-api
 
 workflows:
