@@ -26,12 +26,14 @@ jobs:
   deploy:
     docker:
       - image: google/cloud-sdk
+        environment:
+          MONGODB_URL: mongodb://localhost:27017/ban-app
     steps:
       - checkout
       - setup_remote_docker
       - run:
           name: Setup env vars
-          command: export VERSION=`shell cat ./VERSION`
+          command: echo 'export VERSION=`shell cat ./VERSION`' >> $BASH_ENV
       - run:
           name: Setup Google Cloud SDK
           command: | 
@@ -51,6 +53,7 @@ jobs:
       - run:
           name: Deploy to Kubernetes
           command: kubectl apply -f env/app.yml
+
 workflows:
   version: 2
   release:
