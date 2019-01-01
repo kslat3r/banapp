@@ -2,6 +2,7 @@ package games
 
 import (
 	"ban-app/common"
+	"fmt"
 	"testing"
 
 	"github.com/globalsign/mgo/bson"
@@ -29,6 +30,8 @@ func TestCreate(t *testing.T) {
 	}
 
 	newGame = create(newGame)
+
+	fmt.Println(newGame.ID)
 
 	assert.IsType(newGame.ID, bson.NewObjectId())
 	assert.Equal(newGame.Name, "foo")
