@@ -2,7 +2,6 @@ VERSION         :=      $(shell cat ./VERSION)
 IMAGE_NAME      :=      ban-app
 GC_PROJECT_ID	:=		ban-app
 GCR_HOSTNAME	:= 		eu.gcr.io
-GCR_CONTEXT		:=		gke_ban-app_europe-west2-a_ban-app-prod
 
 all: install
 
@@ -26,5 +25,5 @@ release:
 	docker push ${GCR_HOSTNAME}/${GC_PROJECT_ID}/${IMAGE_NAME}:${VERSION}
 
 deploy:
-	kubectl config use-context ${GCR_CONTEXT}
 	kubectl apply -f env/app.yml
+	kubectl rollout status deployment/${GC_PROJECT_ID}
