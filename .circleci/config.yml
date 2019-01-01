@@ -59,7 +59,7 @@ workflows:
   version: 2
   release-staging:
     jobs:
-      - test
+      - test:
           filters:
             branches:
               only: develop
@@ -73,7 +73,7 @@ workflows:
           context: ban-app-staging
   release-prod:
     jobs:
-      - test
+      - test:
           filters:
             branches:
               only: master
