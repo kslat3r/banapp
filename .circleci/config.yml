@@ -47,7 +47,7 @@ jobs:
           name: Push Docker image
           command: |
             docker tag ${GOOGLE_PROJECT_ID}:$(VERSION) ${GOOGLE_HOSTNAME}/${GOOGLE_PROJECT_ID}/${GOOGLE_PROJECT_ID}:${VERSION}
-	          docker push ${GOOGLE_HOSTNAME}/${GOOGLE_PROJECT_ID}/${GOOGLE_PROJECT_ID}:${VERSION}
+            docker push ${GOOGLE_HOSTNAME}/${GOOGLE_PROJECT_ID}/${GOOGLE_PROJECT_ID}:${VERSION}
       - run:
           name: Deploy to Kubernetes
           command: kubectl apply -f env/app.yml
