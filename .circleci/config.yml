@@ -28,9 +28,9 @@ jobs:
     steps:
       - checkout
       - run: |
-          echo $GCLOUD_SERVICE_KEY | sudo gcloud auth activate-service-account --key-file=-
-          sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
-          sudo gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+          echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+          gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+          gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
       - run: make build
       - run: make image
       - run: make release
