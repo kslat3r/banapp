@@ -21,7 +21,6 @@ jobs:
             done
             echo Failed waiting for Mongo && exit 1
       - run: make test
-
   deploy:
     machine: true
     steps:
