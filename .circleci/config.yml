@@ -52,7 +52,6 @@ jobs:
           name: Deploy to Kubernetes
           command: |
             envsubst < env/app.yml > /tmp/app.yml
-            cat /tmp/app.yml
             kubectl apply -f /tmp/app.yml
             kubectl rollout status -w deployment/${GOOGLE_PROJECT_ID}
 
