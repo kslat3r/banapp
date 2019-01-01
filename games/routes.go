@@ -11,10 +11,6 @@ func List(router *gin.RouterGroup) {
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, list())
 	})
-
-	router.GET("/test", func(c *gin.Context) {
-		c.JSON(http.StatusOK, "test")
-	})
 }
 
 // Create game
