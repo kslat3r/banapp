@@ -32,7 +32,7 @@ jobs:
           gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://eu.gcr.io
       - run: make image
       - run: make release
-      # - run: make deploy
+      - run: make deploy
 
 workflows:
   version: 2
