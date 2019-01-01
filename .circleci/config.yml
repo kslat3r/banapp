@@ -5,7 +5,7 @@ jobs:
     docker:
       - image: circleci/golang:1.11
         environment:
-          MONGODB_URL: mongodb://localhost:27017/ban-app
+            MONGODB_URL: mongodb://localhost:27017/ban-app
       - image: circleci/mongo
     working_directory: /go/src/ban-app
     steps:
@@ -26,11 +26,14 @@ jobs:
   deploy:
     docker:
       - image: google/cloud-sdk
-        environment:
-          VERSION: 1.0.0
     steps:
       - checkout
       - setup_remote_docker
+      - run:
+          name: Setup env vars
+          command: |
+            export VERSION=$(cat ./VERSION)
+            echo "export VERSION=$VERSION" >> $BASH_ENV
       - run:
           name: Setup Google Cloud SDK
           command: | 
@@ -49,7 +52,9 @@ jobs:
             docker push ${GOOGLE_HOSTNAME}/${GOOGLE_PROJECT_ID}/${GOOGLE_PROJECT_ID}:${VERSION}
       - run:
           name: Deploy to Kubernetes
-          command: kubectl apply -f env/app.yml
+          command: |
+            kubectl apply -f env/app.yml
+            kubectl rollout status -w deployment/${GOOGLE_PROJECT_ID}-api
 
 workflows:
   version: 2
