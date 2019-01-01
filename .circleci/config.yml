@@ -30,11 +30,6 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: Setup env vars
-          command: |
-            export VERSION=$(cat ./VERSION)
-            echo "export VERSION=$VERSION" >> $BASH_ENV
-      - run:
           name: Setup Google Cloud SDK
           command: | 
             echo $GOOGLE_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
@@ -44,15 +39,16 @@ jobs:
             gcloud --quiet container clusters get-credentials ${GOOGLE_CLUSTER_NAME}
       - run: 
           name: Create Docker image
-          command: docker build -t ${GOOGLE_PROJECT_ID}:${VERSION} .
+          command: docker build -t ${GOOGLE_PROJECT_ID}:${CIRCLE_SHA1} .
       - run:
           name: Push Docker image
           command: |
-            docker tag ${GOOGLE_PROJECT_ID}:${VERSION} ${GOOGLE_HOSTNAME}/${GOOGLE_PROJECT_ID}/${GOOGLE_PROJECT_ID}:${VERSION}
-            docker push ${GOOGLE_HOSTNAME}/${GOOGLE_PROJECT_ID}/${GOOGLE_PROJECT_ID}:${VERSION}
+            docker tag ${GOOGLE_PROJECT_ID}:${CIRCLE_SHA1} ${GOOGLE_HOSTNAME}/${GOOGLE_PROJECT_ID}/${GOOGLE_PROJECT_ID}:${VERSION}
+            docker push ${GOOGLE_HOSTNAME}/${GOOGLE_PROJECT_ID}/${GOOGLE_PROJECT_ID}:${CIRCLE_SHA1}
       - run:
           name: Deploy to Kubernetes
           command: |
+            envsubst < env/app.yml > env/app.yml
             kubectl apply -f env/app.yml
             kubectl rollout status -w deployment/${GOOGLE_PROJECT_ID}-api
 

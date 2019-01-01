@@ -1,41 +1,41 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: ban-app-api
+  name: ${GOOGLE_PROJECT_ID}-api
 spec:
   ports:
   - port: 80
     protocol: TCP
     targetPort: 8080
   selector:
-    app: ban-app-api
+    app: ${GOOGLE_PROJECT_ID}-api
   type: LoadBalancer
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: ban-app-api
+  name: ${GOOGLE_PROJECT_ID}-api
   namespace: default
   labels:
-    app: ban-app-api
+    app: ${GOOGLE_PROJECT_ID}-api
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: ban-app-api
+      app: ${GOOGLE_PROJECT_ID}-api
   template:
     metadata:
       labels:
-        app: ban-app-api
+        app: ${GOOGLE_PROJECT_ID}-api
     spec:
       containers:
-      - name: ban-app-api
-        image: eu.gcr.io/ban-app/ban-app:1.0.0
+      - name: ${GOOGLE_PROJECT_ID}-api
+        image: ${GOOGLE_HOSTNAME}/${GOOGLE_PROJECT_ID}/${GOOGLE_PROJECT_ID}:${CIRCLE_SHA1}
         imagePullPolicy: Always
         env:
         - name: MONGODB_URL
           valueFrom:
             secretKeyRef:
-              name: ban-app-mongodb
+              name: ${GOOGLE_PROJECT_ID}-mongodb
               key: connection-string
 ---
