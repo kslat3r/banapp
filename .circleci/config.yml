@@ -24,7 +24,6 @@ jobs:
 
   build:
     machine: true
-    working_directory: /go/src/ban-app
     steps:
       - checkout
       - run: make image
