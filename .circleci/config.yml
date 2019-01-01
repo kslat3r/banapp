@@ -33,7 +33,10 @@ jobs:
       - setup_remote_docker
       - run:
           name: Setup env vars
-          command: echo 'export VERSION=`shell cat ./VERSION`' >> $BASH_ENV
+
+          command: |
+            export VERSION=$(shell cat ./VERSION)
+            echo "export VERSION=$VERSION" >> $BASH_ENV
       - run:
           name: Setup Google Cloud SDK
           command: | 
