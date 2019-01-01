@@ -3,7 +3,7 @@ version: 2
 jobs:
   test:
     docker:
-      - image: circleci/golang:1.8
+      - image: circleci/golang:1.11
         environment:
             MONGODB_URL: mongodb://localhost:27017/ban-app
       - image: circleci/mongo

@@ -6,7 +6,7 @@ import (
 	"github.com/globalsign/mgo"
 )
 
-const mongoDbURL = "mongodb://localhost/ban-app"
+const mongoDbURL = "mongodb://localhost:27017/ban-app"
 
 // Session the global session
 var Session *mgo.Session
