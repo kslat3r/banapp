@@ -30,24 +30,27 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
+          name: Setup env vars
+          command: export VERSION=`shell cat ./VERSION`
+      - run:
           name: Setup Google Cloud SDK
           command: | 
-            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            echo $GOOGLE_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
             gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
             gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
-            gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://eu.gcr.io
-      - run:
-          name: Install binaries
-          command: apt-get install -qq -y make
+            gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin ${GOOGLE_HOSTNAME}
+            gcloud --quiet container clusters get-credentials ${GOOGLE_CLUSTER_NAME}
       - run: 
           name: Create Docker image
-          command: make image
+          command: docker build -t ${GOOGLE_PROJECT_ID}:$(VERSION) .
       - run:
           name: Push Docker image
-          command: make release
+          command: |
+            docker tag ${GOOGLE_PROJECT_ID}:$(VERSION) ${GOOGLE_HOSTNAME}/${GOOGLE_PROJECT_ID}/${GOOGLE_PROJECT_ID}:${VERSION}
+	          docker push ${GOOGLE_HOSTNAME}/${GOOGLE_PROJECT_ID}/${GOOGLE_PROJECT_ID}:${VERSION}
       - run:
           name: Deploy to Kubernetes
-          command: make deploy
+          command: kubectl apply -f env/app.yml
 
 workflows:
   version: 2
