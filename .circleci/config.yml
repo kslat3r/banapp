@@ -21,13 +21,15 @@ jobs:
             done
             echo Failed waiting for Mongo && exit 1
       - run: make test
+      - store_test_results:
+          path: /tmp/test-results
 
   build:
     machine: true
     steps:
       - checkout
       - run: make image
-      # - run: make release
+      - run: make release
       # - run: make deploy
 
 workflows:
