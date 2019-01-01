@@ -6,9 +6,6 @@ GCR_CONTEXT		:=		gke_ban-app_europe-west2-a_ban-app-prod
 
 all: install
 
-install:
-	go install -v
-
 test:
 	go test ./... -v
 
