@@ -3,12 +3,25 @@ version: 2
 jobs:
   test:
     docker:
-      - image: circleci/golang:1.
+      - image: circleci/golang:1.8
+        environment:
+            MONGODB_URL: mongodb://localhost:27017/ban-app
       - image: mongo:3.4.4-jessie
     working_directory: /go/src/ban-app
     steps:
       - checkout
+      - run:
+          name: Waiting for Mongo to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 27017 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for Mongo && exit 1
       - run: make test
+
   build:
     docker:
       - image: circleci/golang:1.9
@@ -17,16 +30,17 @@ jobs:
       - checkout
       - run: make image
       - run: make release
+      - run: make deploy
 
 workflows:
   version: 2
   release:
-      jobs:
-        - test
-        - build:
-            requires:
-              - test
-            filters:
-              brances:
-                only: master
+    jobs:
+      - test
+      - build:
+          requires:
+            - test
+          filters:
+            brances:
+              only: master
           
