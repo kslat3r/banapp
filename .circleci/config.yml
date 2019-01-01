@@ -24,11 +24,10 @@ jobs:
 
   deploy:
     docker:
-      - image: google/cloud-sdk
+      - image: circleci/golang:1.11
     steps:
       - checkout
       - run: |
-          apt-get install -qq -y make
           echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
           gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
           gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
