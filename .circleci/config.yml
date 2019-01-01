@@ -22,7 +22,7 @@ jobs:
             echo Failed waiting for Mongo && exit 1
       - run:
           name: Test
-          command: make test
+          command: go test ./... -v
   deploy:
     docker:
       - image: google/cloud-sdk
