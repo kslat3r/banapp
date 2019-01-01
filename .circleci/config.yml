@@ -23,7 +23,7 @@ jobs:
       - run:
           name: Test
           command: go test ./... -v
-  deploy: &deploy
+  deploy:
     docker:
       - image: google/cloud-sdk
     steps:
@@ -54,19 +54,26 @@ jobs:
             envsubst < env/app.yml > /tmp/app.yml
             kubectl apply -f /tmp/app.yml
             kubectl rollout status -w deployment/${GOOGLE_PROJECT_ID}
-  deploy-prod:
-    <<: *deploy
 
 workflows:
   version: 2
-  release:
+  release-prod:
     jobs:
       - test
-      - deploy-prod:
-          environment:
-            GOOGLE_CLUSTER_NAME: blah
+      - deploy:
+          context: ban-app-prod
           requires:
             - test
           filters:
             branches:
               only: master
+  release-staging:
+    jobs:
+      - test
+      - deploy:
+          context: ban-app-staging
+          requires:
+            - test
+          filters:
+            branches:
+              only: develop
