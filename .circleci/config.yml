@@ -28,6 +28,7 @@ jobs:
       - image: google/cloud-sdk
     steps:
       - checkout
+      - setup_remote_docker
       - run:
           name: Setup Google Cloud SDK
           command: | 
@@ -38,7 +39,6 @@ jobs:
       - run:
           name: Install binaries
           command: apt-get install -qq -y make
-      - setup_remote_docker
       - run: 
           name: Create Docker image
           command: make image
