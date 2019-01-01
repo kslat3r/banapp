@@ -21,12 +21,14 @@ jobs:
             done
             echo Failed waiting for Mongo && exit 1
       - run: make test
-      - store_test_results:
-          path: /tmp/test-results
 
   build:
     machine: true
     steps:
+      - run: |
+          echo $GCLOUD_SERVICE_KEY | sudo gcloud auth activate-service-account --key-file=-
+          sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+          sudo gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
       - checkout
       - run: make image
       - run: make release
