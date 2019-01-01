@@ -6,7 +6,7 @@ jobs:
       - image: circleci/golang:1.8
         environment:
             MONGODB_URL: mongodb://localhost:27017/ban-app
-      - image: circleci/mongo:3-strech-ram
+      - image: circleci/mongo
     working_directory: /go/src/ban-app
     steps:
       - checkout
