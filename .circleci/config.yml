@@ -29,6 +29,7 @@ jobs:
           echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
           gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
           gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+          gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://eu.gcr.io
       - run: make image
       - run: make release
       - run: make deploy
