@@ -2,7 +2,6 @@ package games
 
 import (
 	"ban-app/common"
-	"fmt"
 	"testing"
 
 	"github.com/globalsign/mgo/bson"
@@ -13,9 +12,9 @@ func init() {
 	common.InitDb()
 }
 
-func TestList(t *testing.T) {
+func TestListGames(t *testing.T) {
 	assert := assert.New(t)
-	games := list()
+	games := listGames()
 
 	for _, game := range games {
 		assert.IsType(game.ID, bson.NewObjectId())
@@ -23,15 +22,13 @@ func TestList(t *testing.T) {
 	}
 }
 
-func TestCreate(t *testing.T) {
+func TestCreateGame(t *testing.T) {
 	assert := assert.New(t)
 	newGame := game{
 		Name: "foo",
 	}
 
-	newGame = create(newGame)
-
-	fmt.Println(newGame.ID)
+	newGame = createGame(newGame)
 
 	assert.IsType(newGame.ID, bson.NewObjectId())
 	assert.Equal(newGame.Name, "foo")

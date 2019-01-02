@@ -5,6 +5,7 @@ import (
 
 	"ban-app/common"
 	"ban-app/games"
+	"ban-app/test"
 )
 
 func init() {
@@ -15,8 +16,14 @@ func main() {
 	router := gin.Default()
 	api := router.Group("/api")
 
-	games.List(api.Group("/games"))
-	games.Create(api.Group("/games"))
+	gamesGroup := api.Group("/games")
+
+	games.List(gamesGroup)
+	games.Create(gamesGroup)
+
+	testGroup := api.Group("/test")
+
+	test.ListUsers(testGroup)
 
 	router.Run()
 }

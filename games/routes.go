@@ -9,11 +9,7 @@ import (
 // List all games
 func List(router *gin.RouterGroup) {
 	router.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, list())
-	})
-
-	router.GET("/test", func(c *gin.Context) {
-		c.JSON(http.StatusOK, "hello")
+		c.JSON(http.StatusOK, listGames())
 	})
 }
 
@@ -23,7 +19,7 @@ func Create(router *gin.RouterGroup) {
 		var g game
 		c.BindJSON(&g)
 
-		g = create(g)
+		g = createGame(g)
 
 		c.JSON(http.StatusOK, g)
 	})
