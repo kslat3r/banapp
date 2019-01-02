@@ -38,4 +38,14 @@ spec:
             secretKeyRef:
               name: ${GOOGLE_PROJECT_ID}
               key: connection-string
+        - name: OXFORD_APP_ID
+          valueFrom:
+            secretKeyRef:
+              name: ${GOOGLE_PROJECT_ID}
+              key: oxford-app-id
+        - name: OXFORD_APP_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: ${GOOGLE_PROJECT_ID}
+              key: oxford-app-secret
 ---

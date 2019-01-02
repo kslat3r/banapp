@@ -6,6 +6,7 @@ import (
 	"ban-app/common"
 	"ban-app/games"
 	"ban-app/users"
+	"ban-app/words"
 )
 
 func init() {
@@ -17,13 +18,14 @@ func main() {
 	api := router.Group("/api")
 
 	gamesGroup := api.Group("/games")
-
 	games.Get(gamesGroup)
 	games.Create(gamesGroup)
 
 	usersGroup := api.Group("/users")
-
 	users.Get(usersGroup)
+
+	wordsGroup := api.Group("/words")
+	words.Get(wordsGroup)
 
 	router.Run()
 }
