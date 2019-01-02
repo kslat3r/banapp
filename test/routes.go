@@ -2,39 +2,28 @@ package test
 
 import (
 	"net/http"
+	"sync"
 
 	"github.com/gin-gonic/gin"
 )
 
-func filterTodos(todos []todo, f func(todo) bool) []todo {
-	filtered := make([]todo, 0)
-
-	for _, todo := range todos {
-		if f(todo) {
-			filtered = append(filtered, todo)
-		}
-	}
-
-	return filtered
-}
-
 // ListUsers List all users
 func ListUsers(router *gin.RouterGroup) {
 	router.GET("/users", func(c *gin.Context) {
-		usersCh := make(chan []user)
-		todosCh := make(chan []todo)
+		usersCh := make(chan []user, 1)
 
-		go listUsers(usersCh)
-		go listTodos(todosCh)
+		go getUsers(usersCh)
 
 		users := <-usersCh
-		todos := <-todosCh
+
+		var wg sync.WaitGroup
+		wg.Add(len(users))
 
 		for i := range users {
-			users[i].Todos = filterTodos(todos, func(todo todo) bool {
-				return todo.UserID == users[i].ID
-			})
+			go users[i].GetTodos(&wg)
 		}
+
+		wg.Wait()
 
 		c.JSON(http.StatusOK, users)
 	})
