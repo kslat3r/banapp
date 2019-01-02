@@ -1,18 +1,10 @@
 package words
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"os"
 )
-
-type dictionary struct {
-	Metadata struct {
-		Total int `json:"total"`
-	} `json:"metadata"`
-}
 
 type word struct {
 	Value  string `json:"value"`
@@ -27,7 +19,7 @@ func get(value string) word {
 		panic("Could not get Oxford dictionary app info")
 	}
 
-	req, reqErr := http.NewRequest("GET", fmt.Sprintf("https://od-api.oxforddictionaries.com:443/api/v1/search/en?q=%s&prefix=false", value), nil)
+	req, reqErr := http.NewRequest("GET", fmt.Sprintf("https://od-api.oxforddictionaries.com:443/api/v1/entries/en/%s", value), nil)
 	req.Header.Set("app_id", appID)
 	req.Header.Set("app_key", appSecret)
 
@@ -36,30 +28,11 @@ func get(value string) word {
 	}
 
 	client := &http.Client{}
-	res, resErr := client.Do(req)
-
-	if resErr != nil {
-		panic(resErr)
-	}
-
-	defer res.Body.Close()
-
-	body, readErr := ioutil.ReadAll(res.Body)
-
-	if readErr != nil {
-		panic(readErr)
-	}
-
-	dict := dictionary{}
-	jsonErr := json.Unmarshal(body, &dict)
-
-	if jsonErr != nil {
-		panic(jsonErr)
-	}
+	res, _ := client.Do(req)
 
 	exists := false
 
-	if dict.Metadata.Total > 0 {
+	if res.StatusCode != 404 {
 		exists = true
 	}
 
