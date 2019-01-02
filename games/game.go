@@ -11,9 +11,8 @@ type game struct {
 	Name string        `json:"name" binding:"required" bson:"name"`
 }
 
-func listGames() []game {
-	var list = []game{}
-
+func list() []game {
+	list := []game{}
 	err := common.Db.C("games").Find(nil).All(&list)
 
 	if err != nil {
@@ -23,9 +22,8 @@ func listGames() []game {
 	return list
 }
 
-func createGame(g game) game {
+func create(g game) game {
 	g.ID = bson.NewObjectId()
-
 	err := common.Db.C("games").Insert(g)
 
 	if err != nil {

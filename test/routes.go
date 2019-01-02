@@ -16,7 +16,7 @@ func ListUsers(router *gin.RouterGroup) {
 
 		users := <-usersCh
 
-		var wg sync.WaitGroup
+		wg := sync.WaitGroup{}
 		wg.Add(len(users))
 
 		for i := range users {
