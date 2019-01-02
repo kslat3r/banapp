@@ -17,13 +17,13 @@ func init() {
 	common.InitDb()
 }
 
-func TestListRoute(t *testing.T) {
+func TestGetRoute(t *testing.T) {
 	assert := assert.New(t)
 
 	engine := gin.New()
 	api := engine.Group("/api")
 
-	List(api.Group("/games"))
+	Get(api.Group("/games"))
 
 	req, err := http.NewRequest("GET", "/api/games/", nil)
 	res := httptest.NewRecorder()

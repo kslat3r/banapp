@@ -6,10 +6,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// List all games
-func List(router *gin.RouterGroup) {
+// Get all games
+func Get(router *gin.RouterGroup) {
 	router.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, list())
+		c.JSON(http.StatusOK, get())
 	})
 }
 

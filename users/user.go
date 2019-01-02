@@ -1,4 +1,4 @@
-package test
+package users
 
 import (
 	"encoding/json"
@@ -23,7 +23,32 @@ type user struct {
 	Todos    []todo `json:"todos"`
 }
 
-func (u *user) GetTodos(wg *sync.WaitGroup) {
+func get() []user {
+	res, reqErr := http.Get("https://jsonplaceholder.typicode.com/users")
+
+	if reqErr != nil {
+		panic(reqErr)
+	}
+
+	defer res.Body.Close()
+
+	body, readErr := ioutil.ReadAll(res.Body)
+
+	if readErr != nil {
+		panic(readErr)
+	}
+
+	list := []user{}
+	jsonErr := json.Unmarshal(body, &list)
+
+	if jsonErr != nil {
+		panic(jsonErr)
+	}
+
+	return list
+}
+
+func (u *user) getTodos(wg *sync.WaitGroup) {
 	defer wg.Done()
 
 	url := fmt.Sprintf("https://jsonplaceholder.typicode.com/todos?userId=%d", u.ID)
@@ -49,29 +74,4 @@ func (u *user) GetTodos(wg *sync.WaitGroup) {
 	}
 
 	u.Todos = todos
-}
-
-func getUsers(ch chan<- []user) {
-	res, reqErr := http.Get("https://jsonplaceholder.typicode.com/users")
-
-	if reqErr != nil {
-		panic(reqErr)
-	}
-
-	defer res.Body.Close()
-
-	body, readErr := ioutil.ReadAll(res.Body)
-
-	if readErr != nil {
-		panic(readErr)
-	}
-
-	list := []user{}
-	jsonErr := json.Unmarshal(body, &list)
-
-	if jsonErr != nil {
-		panic(jsonErr)
-	}
-
-	ch <- list
 }

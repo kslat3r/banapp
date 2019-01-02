@@ -11,15 +11,15 @@ type game struct {
 	Name string        `json:"name" binding:"required" bson:"name"`
 }
 
-func list() []game {
-	list := []game{}
-	err := common.Db.C("games").Find(nil).All(&list)
+func get() []game {
+	games := []game{}
+	err := common.Db.C("games").Find(nil).All(&games)
 
 	if err != nil {
 		panic(err)
 	}
 
-	return list
+	return games
 }
 
 func create(g game) game {

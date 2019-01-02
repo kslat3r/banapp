@@ -5,7 +5,7 @@ import (
 
 	"ban-app/common"
 	"ban-app/games"
-	"ban-app/test"
+	"ban-app/users"
 )
 
 func init() {
@@ -18,12 +18,12 @@ func main() {
 
 	gamesGroup := api.Group("/games")
 
-	games.List(gamesGroup)
+	games.Get(gamesGroup)
 	games.Create(gamesGroup)
 
-	testGroup := api.Group("/test")
+	usersGroup := api.Group("/users")
 
-	test.ListUsers(testGroup)
+	users.Get(usersGroup)
 
 	router.Run()
 }

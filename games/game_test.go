@@ -12,9 +12,9 @@ func init() {
 	common.InitDb()
 }
 
-func TestListGames(t *testing.T) {
+func TestGetGames(t *testing.T) {
 	assert := assert.New(t)
-	games := list()
+	games := get()
 
 	for _, game := range games {
 		assert.IsType(game.ID, bson.NewObjectId())
