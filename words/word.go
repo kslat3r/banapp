@@ -15,7 +15,7 @@ type dictionary struct {
 }
 
 type word struct {
-	Value  string `json:"userId"`
+	Value  string `json:"value"`
 	Exists bool   `json:"exists"`
 }
 
