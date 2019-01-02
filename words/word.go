@@ -9,9 +9,9 @@ import (
 )
 
 type dictionary struct {
-	Results []struct {
-		Word string `json:"word"`
-	}
+	Metadata struct {
+		Total int `json:"total"`
+	} `json:"metadata"`
 }
 
 type word struct {
@@ -59,7 +59,7 @@ func get(value string) word {
 
 	exists := false
 
-	if len(dict.Results) > 0 {
+	if dict.Metadata.Total > 0 {
 		exists = true
 	}
 
