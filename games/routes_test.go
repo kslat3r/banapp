@@ -17,13 +17,13 @@ func init() {
 	common.InitDb()
 }
 
-func TestGetRoute(t *testing.T) {
+func TestGetAllGamesRoute(t *testing.T) {
 	assert := assert.New(t)
 
 	engine := gin.New()
 	api := engine.Group("/api")
 
-	Get(api.Group("/games"))
+	GetGames(api.Group("/games"))
 
 	req, err := http.NewRequest("GET", "/api/games/", nil)
 	res := httptest.NewRecorder()
@@ -37,13 +37,13 @@ func TestGetRoute(t *testing.T) {
 	assert.NotEmpty(list[len(list)-1].Name)
 }
 
-func TestCreateRoute(t *testing.T) {
+func TestCreateGameRoute(t *testing.T) {
 	assert := assert.New(t)
 
 	engine := gin.New()
 	api := engine.Group("/api")
 
-	Create(api.Group("/games"))
+	CreateGame(api.Group("/games"))
 
 	g, _ := json.Marshal(game{
 		Name: "bar",

@@ -14,7 +14,7 @@ func init() {
 
 func TestGetGames(t *testing.T) {
 	assert := assert.New(t)
-	games := get()
+	games := getGames()
 
 	for _, game := range games {
 		assert.IsType(game.ID, bson.NewObjectId())
@@ -28,7 +28,7 @@ func TestCreateGame(t *testing.T) {
 		Name: "foo",
 	}
 
-	newGame = create(newGame)
+	newGame = createGame(newGame)
 
 	assert.IsType(newGame.ID, bson.NewObjectId())
 	assert.Equal(newGame.Name, "foo")

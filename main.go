@@ -18,8 +18,11 @@ func main() {
 	api := router.Group("/api")
 
 	gamesGroup := api.Group("/games")
-	games.Get(gamesGroup)
-	games.Create(gamesGroup)
+	games.CreateGame(gamesGroup)
+	games.GetGames(gamesGroup)
+	games.GetGame(gamesGroup)
+	games.UpdateGame(gamesGroup)
+	games.CreatePlayer(gamesGroup)
 
 	usersGroup := api.Group("/users")
 	users.Get(usersGroup)
