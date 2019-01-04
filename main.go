@@ -5,7 +5,6 @@ import (
 
 	"ban-app/common"
 	"ban-app/games"
-	"ban-app/users"
 	"ban-app/words"
 )
 
@@ -23,9 +22,6 @@ func main() {
 	games.GetGame(gamesGroup)
 	games.UpdateGame(gamesGroup)
 	games.CreatePlayer(gamesGroup)
-
-	usersGroup := api.Group("/users")
-	users.Get(usersGroup)
 
 	wordsGroup := api.Group("/words")
 	words.Get(wordsGroup)
