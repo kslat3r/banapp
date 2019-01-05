@@ -46,8 +46,8 @@ jobs:
       - run:
           name: Push Docker image
           command: |
-            docker tag ban-app:${CIRCLE_SHA1} https://gcr.io/ban-app/ban-app:${CIRCLE_SHA1}
-            docker push https://gcr.io/ban-app/ban-app:${CIRCLE_SHA1}
+            docker tag ban-app:${CIRCLE_SHA1} gcr.io/ban-app/ban-app:${CIRCLE_SHA1}
+            docker push gcr.io/ban-app/ban-app:${CIRCLE_SHA1}
       - run:
           name: Deploy to Kubernetes
           command: |
