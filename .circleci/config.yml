@@ -37,7 +37,7 @@ jobs:
           command: | 
             echo $GOOGLE_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
             gcloud --quiet config set project ban-app
-            gcloud --quiet config set compute/zone eu-west-2
+            gcloud --quiet config set compute/zone europe-west2-a
             gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://gcr.io
             gcloud --quiet container clusters get-credentials ${GOOGLE_CLUSTER_NAME}
       - run: 
