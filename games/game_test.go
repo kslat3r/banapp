@@ -12,6 +12,18 @@ func init() {
 	common.InitDb()
 }
 
+func TestCreateGame(t *testing.T) {
+	assert := assert.New(t)
+	newGame := game{
+		Name: "foo",
+	}
+
+	newGame = createGame(&newGame)
+
+	assert.IsType(newGame.ID, bson.NewObjectId())
+	assert.Equal(newGame.Name, "foo")
+}
+
 func TestGetGames(t *testing.T) {
 	assert := assert.New(t)
 	games := getGames()
@@ -20,16 +32,4 @@ func TestGetGames(t *testing.T) {
 		assert.IsType(game.ID, bson.NewObjectId())
 		assert.NotEmpty(game.Name)
 	}
-}
-
-func TestCreateGame(t *testing.T) {
-	assert := assert.New(t)
-	newGame := game{
-		Name: "foo",
-	}
-
-	newGame = createGame(newGame)
-
-	assert.IsType(newGame.ID, bson.NewObjectId())
-	assert.Equal(newGame.Name, "foo")
 }
