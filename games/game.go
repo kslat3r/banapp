@@ -6,6 +6,14 @@ import (
 	"github.com/globalsign/mgo/bson"
 )
 
+type game struct {
+	ID               bson.ObjectId  `json:"_id" bson:"_id"`
+	Name             string         `json:"name" bson:"name"`
+	RemainingLetters map[string]int `json:"remainingLetters" bson:"remainingLetters"`
+	Status           status         `json:"status" bson:"status"`
+	Players          []player       `json:"players" bson:"players"`
+}
+
 var letters = map[string]int{
 	"A": 13,
 	"B": 3,
@@ -48,87 +56,48 @@ type player struct {
 	Letters map[string]int `json:"letters" bson:"letters"`
 }
 
-type game struct {
-	ID               bson.ObjectId  `json:"_id" bson:"_id"`
-	Name             string         `json:"name" bson:"name"`
-	RemainingLetters map[string]int `json:"remainingLetters" bson:"remainingLetters"`
-	Status           status         `json:"status" bson:"status"`
-	Players          []player       `json:"players" bson:"players"`
-}
+func (game *game) update(data *gameData) (*game, error) {
+	if game.Status == statusWaiting && data.Status == statusPlaying {
+		game.start()
+	}
 
-func createGame(g *game) game {
-	g.ID = bson.NewObjectId()
-	g.RemainingLetters = letters
-	g.Status = statusWaiting
-	g.Players = []player{}
-
-	err := common.Db.C("games").Insert(g)
+	game.Status = data.Status
+	set, err := bson.Marshal(game)
 
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	return *g
-}
-
-func getGames() []game {
-	games := []game{}
-	err := common.Db.C("games").Find(nil).All(&games)
+	err = common.Db.C("games").Update(bson.M{"_id": game.ID}, bson.M{"$set": set})
 
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	return games
+	return game, nil
 }
 
-func getGame(id string) game {
-	game := game{}
-	err := common.Db.C("games").FindId(bson.ObjectIdHex(id)).One(&game)
-
-	if err != nil {
-		panic(err)
-	}
-
-	return game
-}
-
-func updateGame(og *game, ng *game) game {
-	if og.Status == statusWaiting && ng.Status == statusPlaying {
-		for i := range og.Players {
-			setStartingLetters(&og.Players[i], &og.RemainingLetters)
-		}
-	}
-
-	query := bson.M{"_id": og.ID}
-	update := bson.M{"$set": bson.M{"status": ng.Status, "remainingLetters": og.RemainingLetters, "players": og.Players}}
-	err := common.Db.C("games").Update(query, update)
-
-	if err != nil {
-		panic(err)
-	}
-
-	return getGame(og.ID.Hex())
-}
-
-func addPlayer(g *game, p *player) game {
-	if g.Status != statusWaiting {
+func (game *game) addPlayer(data *playerData) (*game, error) {
+	if game.Status != statusWaiting {
 		panic("Game is not in correct status to add player")
 	}
 
-	p.Letters = map[string]int{}
-
-	query := bson.M{"_id": g.ID}
-	update := bson.M{"$push": bson.M{"players": p}}
-	err := common.Db.C("games").Update(query, update)
+	player := player{Name: data.Name, Letters: map[string]int{}}
+	set, err := bson.Marshal(player)
 
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	return getGame(g.ID.Hex())
+	err = common.Db.C("games").Update(bson.M{"_id": game.ID}, bson.M{"$set": set})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return game, nil
 }
 
-func setStartingLetters(p *player, letters *map[string]int) {
-	p.Letters = *letters
+func (game *game) start() {
+
 }
