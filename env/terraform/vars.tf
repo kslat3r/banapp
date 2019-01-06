@@ -11,7 +11,6 @@ locals {
     "https://www.googleapis.com/auth/service.management.readonly",
     "https://www.googleapis.com/auth/trace.append"
   ]
-
   get_credentials = "gcloud container clusters get-credentials"
 }
 
