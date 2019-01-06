@@ -1,45 +1,31 @@
 resource "google_container_cluster" "banapp-prod" {
   name = "banapp-prod"
-  zone = "europe-west2-a"
-  initial_node_count = 3
+  zone = "${local.zone}"
+  initial_node_count = "${local.initial_node_count}"
   
   node_config {
-    machine_type = "n1-standard-1"
-    disk_size_gb = 10
-    oauth_scopes = [
-      "https://www.googleapis.com/auth/devstorage.read_only",
-      "https://www.googleapis.com/auth/logging.write",
-      "https://www.googleapis.com/auth/monitoring",
-      "https://www.googleapis.com/auth/servicecontrol",
-      "https://www.googleapis.com/auth/service.management.readonly",
-      "https://www.googleapis.com/auth/trace.append"
-    ]
+    machine_type = "${local.machine_type}"
+    disk_size_gb = "${local.disk_size_gb}"
+    oauth_scopes = "${local.oauth_scopes}"
   }
 }
 
 resource "google_container_cluster" "banapp-staging" {
   name = "banapp-staging"
-  zone = "europe-west2-a"
-  initial_node_count = 3
+  zone = "${local.zone}"
+  initial_node_count = "${local.initial_node_count}"
   
   node_config {
-    machine_type = "n1-standard-1"
-    disk_size_gb = 10
-    oauth_scopes = [
-      "https://www.googleapis.com/auth/devstorage.read_only",
-      "https://www.googleapis.com/auth/logging.write",
-      "https://www.googleapis.com/auth/monitoring",
-      "https://www.googleapis.com/auth/servicecontrol",
-      "https://www.googleapis.com/auth/service.management.readonly",
-      "https://www.googleapis.com/auth/trace.append"
-    ]
+    machine_type = "${local.machine_type}"
+    disk_size_gb = "${local.disk_size_gb}"
+    oauth_scopes = "${local.oauth_scopes}"
   }
 }
 
 output "get-credentials-prod-cmd" {
-  value = "gcloud container clusters get-credentials ${google_container_cluster.banapp-prod.id} --zone ${google_container_cluster.banapp-prod.zone}"
+  value = "${local.get_credentials} ${google_container_cluster.banapp-prod.id} --zone ${google_container_cluster.banapp-prod.zone}"
 }
 
 output "get-credentials-staging-cmd" {
-  value = "gcloud container clusters get-credentials ${google_container_cluster.banapp-staging.id} --zone ${google_container_cluster.banapp-staging.zone}"
+  value = "${local.get_credentials} ${google_container_cluster.banapp-staging.id} --zone ${google_container_cluster.banapp-staging.zone}"
 }

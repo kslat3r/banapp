@@ -89,8 +89,8 @@ func UpdateGame(router *gin.RouterGroup) {
 	})
 }
 
-// CreatePlayer add player to game
-func CreatePlayer(router *gin.RouterGroup) {
+// AddPlayer add player to game
+func AddPlayer(router *gin.RouterGroup) {
 	router.POST("/:id/players", func(c *gin.Context) {
 		id := c.Param("id")
 		game, err := getByID(id)

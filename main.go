@@ -21,7 +21,7 @@ func main() {
 	games.GetGames(gamesGroup)
 	games.GetGame(gamesGroup)
 	games.UpdateGame(gamesGroup)
-	games.CreatePlayer(gamesGroup)
+	games.AddPlayer(gamesGroup)
 
 	wordsGroup := api.Group("/words")
 	words.Get(wordsGroup)
