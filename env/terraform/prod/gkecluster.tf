@@ -1,5 +1,5 @@
-resource "google_container_cluster" "ban-app-prod" {
-  name = "ban-app-prod"
+resource "google_container_cluster" "bananapp-prod" {
+  name = "bananapp-prod"
   zone = "europe-west2-a"
   initial_node_count = 3
   
@@ -9,5 +9,5 @@ resource "google_container_cluster" "ban-app-prod" {
 }
 
 output "get-credentials-cmd" {
-  value = "gcloud container clusters get-credentials ${google_container_cluster.ban-app-prod.id} --zone ${google_container_cluster.ban-app-prod.zone}"
+  value = "gcloud container clusters get-credentials ${google_container_cluster.bananapp-prod.id} --zone ${google_container_cluster.bananapp-prod.zone}"
 }

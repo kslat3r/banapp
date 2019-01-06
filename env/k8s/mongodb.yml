@@ -5,8 +5,8 @@ metadata:
     app: mongodb
     chart: mongodb-5.0.0
     heritage: Tiller
-    release: ban-app
-  name: ban-app-mongodb
+    release: bananapp
+  name: bananapp-mongodb
 spec:
   accessModes:
     - "ReadWriteOnce"
@@ -17,11 +17,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ban-app-mongodb
+  name: bananapp-mongodb
   labels:
     app: mongodb
     chart: mongodb-5.0.0
-    release: "ban-app"
+    release: "bananapp"
     heritage: "Tiller"
 spec:
   type: ClusterIP
@@ -31,51 +31,51 @@ spec:
     targetPort: mongodb
   selector:
     app: mongodb
-    release: "ban-app"
+    release: "bananapp"
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: ban-app-mongodb
+  name: bananapp-mongodb
   labels:
     app: mongodb
     chart: mongodb-5.0.0
-    release: "ban-app"
+    release: "bananapp"
     heritage: "Tiller"
 spec:
   selector:
     matchLabels:
       app: mongodb
-      release: "ban-app"
+      release: "bananapp"
   template:
     metadata:
       labels:
         app: mongodb
-        release: "ban-app"
+        release: "bananapp"
         chart: mongodb-5.0.0
     spec:
       securityContext:
         fsGroup: 1001
         runAsUser: 1001
       containers:
-      - name: ban-app-mongodb
+      - name: bananapp-mongodb
         image: docker.io/bitnami/mongodb:4.0.3
         imagePullPolicy: "Always"
         env:
         - name: MONGODB_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: ban-app-mongodb
+              name: bananapp-mongodb
               key: mongodb-root-password
         - name: MONGODB_USERNAME
           value: "user"
         - name: MONGODB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: ban-app-mongodb
+              name: bananapp-mongodb
               key: mongodb-password
         - name: MONGODB_DATABASE
-          value: "ban-app"
+          value: "bananapp"
         - name: MONGODB_ENABLE_IPV6
           value: "yes"
         - name: MONGODB_EXTRA_FLAGS
@@ -114,5 +114,5 @@ spec:
       volumes:
       - name: data
         persistentVolumeClaim:
-          claimName: ban-app-mongodb
+          claimName: bananapp-mongodb
 ---

@@ -1,5 +1,5 @@
 provider "google" {
   credentials = "${file("../gcp-credentials.json")}"
-  project = "ban-app"
+  project = "bananapp"
   region = "europe-west2"
 }

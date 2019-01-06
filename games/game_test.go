@@ -1,7 +1,7 @@
 package games
 
 import (
-	"ban-app/common"
+	"bananapp/common"
 	"testing"
 
 	"github.com/globalsign/mgo/bson"

@@ -6,7 +6,7 @@ import (
 	"github.com/globalsign/mgo"
 )
 
-const mongoDbURL = "mongodb://localhost:27017/ban-app"
+const mongoDbURL = "mongodb://localhost:27017/bananapp"
 
 // Session the global session
 var Session *mgo.Session
@@ -36,5 +36,5 @@ func InitDb() {
 
 	Session.SetSafe(&mgo.Safe{})
 
-	Db = Session.DB("ban-app")
+	Db = Session.DB("bananapp")
 }

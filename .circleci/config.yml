@@ -5,9 +5,9 @@ jobs:
     docker:
       - image: circleci/golang:1.11
         environment:
-          MONGODB_URL: mongodb://localhost:27017/ban-app
+          MONGODB_URL: mongodb://localhost:27017/bananapp
       - image: circleci/mongo
-    working_directory: /go/src/ban-app
+    working_directory: /go/src/bananapp
     steps:
       - checkout
       - run:
@@ -36,24 +36,24 @@ jobs:
           name: Setup Google Cloud SDK
           command: | 
             echo $GOOGLE_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
-            gcloud --quiet config set project ban-app
+            gcloud --quiet config set project bananapp
             gcloud --quiet config set compute/zone europe-west2-a
             gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://gcr.io
             gcloud --quiet container clusters get-credentials ${GOOGLE_CLUSTER_NAME}
       - run: 
           name: Create Docker image
-          command: docker build -t ban-app:${CIRCLE_SHA1} .
+          command: docker build -t bananapp:${CIRCLE_SHA1} .
       - run:
           name: Push Docker image
           command: |
-            docker tag ban-app:${CIRCLE_SHA1} gcr.io/ban-app/ban-app:${CIRCLE_SHA1}
-            docker push gcr.io/ban-app/ban-app:${CIRCLE_SHA1}
+            docker tag bananapp:${CIRCLE_SHA1} gcr.io/bananapp/bananapp:${CIRCLE_SHA1}
+            docker push gcr.io/bananapp/bananapp:${CIRCLE_SHA1}
       - run:
           name: Deploy to Kubernetes
           command: |
             envsubst < env/k8s/app.yml > /tmp/app.yml
             kubectl apply -f /tmp/app.yml
-            kubectl rollout status -w deployment/ban-app
+            kubectl rollout status -w deployment/bananapp
 
 workflows:
   version: 2
@@ -63,25 +63,25 @@ workflows:
           filters:
             branches:
               only: develop
-          context: ban-app-staging
+          context: bananapp-staging
       - deploy:
           requires:
             - test
           filters:
             branches:
               only: develop
-          context: ban-app-staging
+          context: bananapp-staging
   release-prod:
     jobs:
       - test:
           filters:
             branches:
               only: master
-          context: ban-app-prod
+          context: bananapp-prod
       - deploy:
           requires:
             - test
           filters:
             branches:
               only: master
-          context: ban-app-prod
+          context: bananapp-prod
