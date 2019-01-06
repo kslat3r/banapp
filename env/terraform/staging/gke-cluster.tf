@@ -5,6 +5,12 @@ resource "google_container_cluster" "bananapp-staging" {
   
   node_config {
     machine_type = "n1-standard-1"
+    oauth_scopes = [
+      "compute-rw",
+      "storage-ro",
+      "logging-write",
+      "monitoring"
+    ]
   }
 }
 
