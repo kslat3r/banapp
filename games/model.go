@@ -2,6 +2,7 @@ package games
 
 import (
 	"banapp/common"
+	"errors"
 
 	"github.com/globalsign/mgo/bson"
 )
@@ -57,18 +58,21 @@ type player struct {
 }
 
 func (game *game) update(data *gameData) (*game, error) {
+	if game.Status == statusPlaying && data.Status == statusWaiting {
+		return nil, errors.New("Game is not in correct status to change to waiting")
+	}
+
 	if game.Status == statusWaiting && data.Status == statusPlaying {
-		game.start()
+		if len(game.Players) >= 2 {
+			dealTiles(game)
+		} else {
+			return nil, errors.New("Game does not have enough players to begin")
+		}
 	}
 
 	game.Status = data.Status
-	set, err := bson.Marshal(game)
 
-	if err != nil {
-		return nil, err
-	}
-
-	err = common.Db.C("games").Update(bson.M{"_id": game.ID}, bson.M{"$set": set})
+	err := common.Db.C("games").Update(bson.M{"_id": game.ID}, bson.M{"$set": game})
 
 	if err != nil {
 		return nil, err
@@ -79,25 +83,17 @@ func (game *game) update(data *gameData) (*game, error) {
 
 func (game *game) addPlayer(data *playerData) (*game, error) {
 	if game.Status != statusWaiting {
-		panic("Game is not in correct status to add player")
+		return nil, errors.New("Game is not in correct status to add player")
 	}
 
 	player := player{Name: data.Name, Letters: map[string]int{}}
-	set, err := bson.Marshal(player)
+	game.Players = append(game.Players, player)
 
-	if err != nil {
-		return nil, err
-	}
-
-	err = common.Db.C("games").Update(bson.M{"_id": game.ID}, bson.M{"$set": set})
+	err := common.Db.C("games").Update(bson.M{"_id": game.ID}, bson.M{"$set": game})
 
 	if err != nil {
 		return nil, err
 	}
 
 	return game, nil
-}
-
-func (game *game) start() {
-
 }
