@@ -54,7 +54,6 @@ jobs:
             envsubst < env/k8s/app.yml > /tmp/app.yml
             kubectl apply -f /tmp/app.yml
             kubectl rollout status -w deployment/bananapp
-
 workflows:
   version: 2
   release-staging:
