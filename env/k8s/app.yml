@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
       - name: bananapp
-        image: eu.gcr.io/bananapp/bananapp:latest
+        image: eu.gcr.io/bananapp/bananapp:${CIRCLE_SHA1}
         imagePullPolicy: Always
         env:
         - name: MONGODB_URL
