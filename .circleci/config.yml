@@ -46,8 +46,8 @@ jobs:
       - run:
           name: Push Docker image
           command: |
-            docker tag bananapp:${CIRCLE_SHA1} gcr.io/bananapp/bananapp:${CIRCLE_SHA1}
-            docker push gcr.io/bananapp/bananapp:${CIRCLE_SHA1}
+            docker tag bananapp:${CIRCLE_SHA1} gcr.io/bananapp/bananapp:1.0.0
+            docker push gcr.io/bananapp/bananapp:1.0.0
       - run:
           name: Deploy to Kubernetes
           command: |
