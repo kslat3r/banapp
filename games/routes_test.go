@@ -1,7 +1,7 @@
 package games
 
 import (
-	"bananapp/common"
+	"banapp/common"
 	"bytes"
 	"encoding/json"
 	"net/http"

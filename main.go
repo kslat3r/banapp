@@ -3,9 +3,9 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 
-	"bananapp/common"
-	"bananapp/games"
-	"bananapp/words"
+	"banapp/common"
+	"banapp/games"
+	"banapp/words"
 )
 
 func init() {

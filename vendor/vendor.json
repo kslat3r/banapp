@@ -3,23 +3,23 @@
 	"ignore": "test",
 	"package": [
 		{
-			"path": "bananapp",
+			"path": "banapp",
 			"revision": ""
 		},
 		{
-			"path": "bananapp/common",
+			"path": "banapp/common",
 			"revision": ""
 		},
 		{
-			"path": "bananapp/games",
+			"path": "banapp/games",
 			"revision": ""
 		},
 		{
-			"path": "bananapp/users",
+			"path": "banapp/users",
 			"revision": ""
 		},
 		{
-			"path": "bananapp/words",
+			"path": "banapp/words",
 			"revision": ""
 		},
 		{
@@ -183,5 +183,5 @@
 			"revisionTime": "2018-11-15T11:05:04Z"
 		}
 	],
-	"rootPath": "bananapp"
+	"rootPath": "banapp"
 }

@@ -1,1 +1,1 @@
-[![CircleCI](https://circleci.com/gh/kslat3r/bananapp.svg?style=svg)](https://circleci.com/gh/kslat3r/bananapp)
+[![CircleCI](https://circleci.com/gh/kslat3r/banapp.svg?style=svg)](https://circleci.com/gh/kslat3r/banapp)
