@@ -33,11 +33,16 @@ spec:
         image: gcr.io/banapp/banapp:${CIRCLE_SHA1}
         imagePullPolicy: Always
         env:
-        - name: MONGODB_URL
+        - name: BANAPP_MONGODB_USER
           valueFrom:
             secretKeyRef:
               name: banapp
-              key: connection-string
+              key: mongodb-user
+        - name: BANAPP_MONGODB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: banapp
+              key: mongodb-password
         - name: OXFORD_APP_ID
           valueFrom:
             secretKeyRef:

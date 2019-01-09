@@ -16,3 +16,4 @@ banapp
 *credentials*
 *secret*
 .terraform
+data/

@@ -1,12 +1,14 @@
 package common
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/globalsign/mgo"
 )
 
-const mongoDbURL = "mongodb://localhost:27017/banapp"
+const defaultURL = "mongodb://localhost:27017"
+const defaultDb = "banapp"
 
 // Session the global session
 var Session *mgo.Session
@@ -16,10 +18,15 @@ var Db *mgo.Database
 
 // InitDb initialise everything
 func InitDb() {
-	url := os.Getenv("MONGODB_URL")
+	url := fmt.Sprintf("%s/%s", defaultURL, defaultDb)
 
-	if len(url) == 0 {
-		url = mongoDbURL
+	user := os.Getenv("BANAPP_MONGODB_USER")
+	password := os.Getenv("BANAPP_MONGODB_PASSWORD")
+	hostname := os.Getenv("BANAPP_MONGODB_SERVICE_HOST")
+	port := os.Getenv("BANAPP_MONGODB_SERVICE_PORT")
+
+	if len(user) > 0 && len(password) > 0 && len(hostname) > 0 && len(port) > 0 {
+		url = fmt.Sprintf("mongodb://%s:%s@%s:%s/%s", user, password, hostname, port, defaultDb)
 	}
 
 	info, err := mgo.ParseURL(url)
