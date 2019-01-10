@@ -23,7 +23,7 @@ func create(data *gameData) (*game, error) {
 	return &game, nil
 }
 
-func list() (*[]game, error) {
+func list() ([]game, error) {
 	games := []game{}
 
 	err := common.Db.C("games").Find(nil).All(&games)
@@ -32,7 +32,7 @@ func list() (*[]game, error) {
 		return nil, err
 	}
 
-	return &games, nil
+	return games, nil
 }
 
 func getByID(id string) (*game, error) {
